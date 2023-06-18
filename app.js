@@ -4,9 +4,9 @@ const app =express();
 const port=5000  //port number it is 
 const path=require('path')
 const ejs=require('ejs')
-const mysql=require('mysql');
-const { connect } = require('http2');
-const { error } = require('console');
+// const mysql=require('mysql');
+// const { connect } = require('http2');
+// const { error } = require('console');
 
 app.use(express.static(path.join(__dirname,'/public')))
 
@@ -21,15 +21,16 @@ app.post('/',(req,res)=>{
 
 })
 
-const connection=mysql.createConnection(
-    {
-        host :'localhost',
-        user:'root',
-        password:'root',
-        database:'demo'
-    }
-)
-
+// creating a mysql conncetion
+// const connection=mysql.createConnection(
+//     {
+//         host :'localhost',
+//         user:'root',
+//         password:'root',
+//         database:'demo'
+//     }
+// )
+// managing connection
 // connection.connect((err)=>{
 //     if(err){
 //         console.log('error')
@@ -39,16 +40,43 @@ const connection=mysql.createConnection(
 //     }
 // })
 // connection.query()
-let data_base=`SELECT * FROM data`
-connection.query(data_base,(err,res)=>{
-    if(err){
-        console.warn('error')
-    }
-    else{
-        console.log(res)
-    }
+// let data_base=`SELECT * FROM data`
+// connection.query(data_base,(err,res)=>{
+//     if(err){
+//         console.warn('error')
+//     }
+//     else{
+//         console.log(res)
+//     }
+// })
+
+// using creating pool
+
+const mysql=require('mysql');
+
+
+const connection=mysql.createPool({
+    host:'localhost',
+    user:'root',
+    password:'root',
+    database:'demo'
+})
+
+const query=()=>{
+    return new Promise((resolve,reject)=>{
+        connection.query('SELECT*FROM data',(error,element)=>{
+            if(error){
+                return reject(error)
+            }
+           return resolve(element)
+        })
+    })
+}
+const p=query()
+p.then((result)=>{
+    console.log(result)
 })
 
 app.listen(port,()=>{
-    console.log("my server port number is  3000")
+    console.log("my server port number is  5000")
 })
