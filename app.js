@@ -16,39 +16,42 @@ const connection=mysql.createPool({
     database:'form'
 })
 
-const query=()=>{
-    return new Promise((resolve,reject)=>{
-        connection.query('SELECT*FROM formdata',(error,element)=>{
-            if(error){
-                return reject(error)
-            }
-           return resolve(element)
-        })
-    })
-}
-const p=query()
-p.then((result)=>{
-    console.log(result)
-})
-app.use(express.static(path.join(__dirname,'/public')))
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:false}))
-// app.set('views',path.join(__dirname,'views'))
+// const query=()=>{
+//     return new Promise((resolve,reject)=>{
+//         connection.query('SELECT*FROM formdata',(error,element)=>{
+//             if(error){
+//                 return reject(error)
+//             }
+//            return resolve(element)
+//         })
+//     })
+// // }
+ 
+// async function query_list(){
+//     const p = await query();
+//     console.log(p)
+// }
+// query_list();
+
+// app.use(express.static(path.join(__dirname,'/public')))
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended:false}))
+// // app.set('views',path.join(__dirname,'views'))
 app.set('view engine','ejs')
 app.get('/',(req,res)=>{
     res.render('index')
 })
 app.post('/',(req,res)=>{
-    let email=req.body.youremail;
-    let name=req.body.yourname;
-    let form_data=`INSERT INTO formdata (email,name) VALUES ("${email}", "${name}")`;
-    connection.query(form_data,(err,result)=>{
-        if(err) throw err
-        // console.log(result)
-        res.send("register sucessfull")
-        // res.redirect('/')
+    // let email=req.body.youremail;
+    // let name=req.body.yourname;
+    // let form_data=`INSERT INTO formdata (email,name) VALUES ("${email}", "${name}")`;
+    // connection.query(form_data,(err,result)=>{
+    //     if(err) throw err
+    //     console.log(result)
+    //     res.send("register sucessfull")
+    //     res.redirect('/')
         
-    })
+    // })
 })
 
 app.listen(port,()=>{
